@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="edu.ahau.jsjds.sql.DataDao">
+    <!-- 查找所有记录 -->
+	<select id="selectAllData" resultType="edu.ahau.jsjds.sql.Data"> <!-- parameterType="java.lang.String"  -->
+	    select * from sensor_data
+	</select>
+	<!-- 插入一个记录 -->
+	<insert id="insertData" parameterType="edu.ahau.jsjds.sql.Data">
+	    insert into sensor_data(address, funcnum, datalen, data) values (#{address}, #{funcnum}, #{datalen}, #{data}) 
+	</insert>	
+	<!-- 修改一个记录 
+	<update id="updateData" parameterType="edu.ahau.jsjds.sql.Data">
+	    update sensor_data set StuPassword = #{StuPassword} where StuNo = #{address}
+	</update>
+	-->
+</mapper>

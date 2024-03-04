@@ -1,0 +1,1297 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+	<meta charset="UTF-8">
+	<title>Side Menu Animation</title>
+	
+	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.4.1/font/bootstrap-icons.css">
+	<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta3/dist/css/bootstrap.min.css" rel="stylesheet"
+		integrity="sha384-eOJMYsd53ii+scO/bJGFsiCZc+5NDVN2yr8+0RDqr0Ql0h+rP48ckxlpbzKgwra6" crossorigin="anonymous">
+
+	<script src="https://cdn.staticfile.org/jquery/3.2.1/jquery.min.js"></script>
+	<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta3/dist/js/bootstrap.bundle.min.js"
+		integrity="sha384-JEW9xMcG8R+pH31jmWH6WWP0WintQrMb4s7ZOdauHnUtxwoG2vI5DkLtS3qm9Ekf"
+		crossorigin="anonymous"></script>
+	<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.1/dist/umd/popper.min.js"
+		integrity="sha384-SR1sx49pcuLnqZUnnPwx6FCym0wLsk5JZuNx2bPPENzswTNFaQU1RDvt3wT4gWFG"
+		crossorigin="anonymous"></script>
+	<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta3/dist/js/bootstrap.min.js"
+		integrity="sha384-j0CNLUeiqtyaRmlzUHCPZ+Gy5fQu0dQ6eZ/xAww941Ai1SxSY+0EQqNXNE6DZiVc"
+		crossorigin="anonymous"></script>
+	<style>
+		@import url(https://fonts.googleapis.com/css?family=Raleway:300,700);
+		@import url('https://fonts.googleapis.com/css2?family=ZCOOL+QingKe+HuangYou&display=swap');
+		
+		:root {
+	--button-width: 60px;
+	--button-height: 30px;
+	--toggle-diameter: 26px;
+	--button-toggle-offset: calc((var(--button-height) - var(--toggle-diameter)) / 2);
+	--toggle-shadow-offset: 2px;
+	--toggle-wider: 34px;
+	--color-grey: #E9E9E9;
+	--color-dark-grey: #39393D;
+	--color-green: #30D158;
+}
+
+::-webkit-scrollbar-track {
+	background-color: #eeeeee;
+	-webkit-box-shadow: inset 0 0 6px rgb(0 0 0 / 30%);
+	-webkit-border-radius: 10px;
+}
+
+/* 滚动条的滑轨背景颜色 */
+
+::-webkit-scrollbar-thumb {
+	background-color: #555555;
+	-webkit-border-radius: 10px;
+	border-radius: 10px;
+	-webkit-box-shadow: inset 0 0 6px rgb(0 0 0 / 50%);
+}
+
+/* 滑块颜色 */
+
+::-webkit-scrollbar-button {
+	background-color: #eeeeee00;
+	-webkit-border-radius: 10px;
+}
+
+/* 滑轨两头的监听按钮颜色 */
+
+::-webkit-scrollbar-corner {
+	background-color: #eeeeee;
+}
+
+/* 横向滚动条和纵向滚动条相交处尖角的颜色 */
+::-webkit-scrollbar {
+	width: 15px;
+	background-color: #eeeeee;
+}
+
+/* 这是针对缺省样式 (必须的) */
+body {
+	background: #ddd;
+	background: -webkit-linear-gradient(left top, #eee, #eee);
+	background: -moz-linear-gradient(bottom right, #eee, #eee);
+	background: linear-gradient(to bottom right, #eee, #eee);
+	background-attachment: fixed;
+	color: #fff;
+	font-family: 'ZCOOL QingKe HuangYou', cursive;
+	font-size: 18px;
+	font-weight: 100;
+	line-height: 140%;
+	margin: 0;
+	height: 100%;
+	padding: 0;
+	width: 100%;
+	overflow: scroll;
+}
+
+.page_title,
+.what_to_do {
+	font-weight: 100;
+	line-height: 120%;
+	text-align: center;
+	text-shadow: 0 1px 5px rgba(0, 0, 0, .8);
+	text-transform: uppercase;
+}
+
+/* PEN STYLES ========== */
+a,
+.side_menu {
+	-webkit-transition: all 300ms ease-in-out;
+	transition: all 300ms ease-in-out;
+}
+
+/* 数据监控 ----- */
+.tou {
+	padding-top: 50px;
+	text-align: center;
+	color: #555;
+	font-weight: 20;
+	font-size: 50px;
+	height: 150px;
+}
+
+textarea {
+	text-align: left;
+	resize: none;
+	width: 80%;
+	overflow: auto;
+	word-break: break-all;
+	font-size: 30px;
+	padding: 40px;
+	line-height: 1.3;
+	/* height: 600px; */
+	margin-bottom: 30px;
+}
+
+.xianshi {
+	background-color: #eeeeee;
+	border: 0;
+	border-radius: 2em;
+	box-shadow: -8px -8px 20px -10px rgba(255, 255, 255, 1),
+		8px 8px 20px -10px rgba(0, 0, 0, 0.15);
+	color: #555;
+	outline: 0px;
+}
+
+/* 远程控制 ----- */
+
+.config_table {
+	background-color: #eeeeee;
+	border: 0;
+	border-radius: 2em;
+	box-shadow: -8px -8px 30px -10px rgba(255, 255, 255, 1),
+		8px 8px 30px -10px rgba(0, 0, 0, 0.15);
+	color: #555;
+	outline: 0px;
+	padding: 30px;
+}
+
+.config_table thead th {
+	font-size: 30px;
+	font-weight: 200;
+}
+
+.config_table td,
+th {
+	font-size: 23px;
+	font-weight: 100;
+}
+
+.config_table input[type="text"] {
+	background-color: #eeeeee;
+	border: 0;
+	border-radius: 1em;
+	box-shadow: -8px -8px 10px -10px rgba(255, 255, 255, 1),
+		8px 8px 10px -10px rgba(0, 0, 0, 0.15);
+	color: #555;
+	width: 100px;
+	outline: 0px;
+	padding: 5px;
+	text-align: center;
+	caret-color: #555;
+	transition: all 0.2s;
+}
+
+input[type="text"] {
+	background-color: #eeeeee;
+	border: 0;
+	border-radius: 1em;
+	box-shadow: -8px -8px 10px -10px rgba(255, 255, 255, 1),
+		8px 8px 10px -10px rgba(0, 0, 0, 0.15);
+	color: #555;
+	width: 100px;
+	outline: 0px;
+	padding: 5px;
+	text-align: center;
+	caret-color: #555;
+	transition: all 0.2s;
+}
+
+input[type="text"]:focus {
+	box-shadow: none;
+	background: linear-gradient(155deg,
+			rgba(220, 220, 220, 1) 0%,
+			rgba(250, 250, 250, 1) 100%);
+}
+
+.danwei::before {
+	content: "秒";
+	position: relative;
+	font-size: 20px;
+	left: 90px;
+	z-index: 2;
+	color: #555;
+}
+
+.config_table input[type="text"]:focus {
+	box-shadow: none;
+	background: linear-gradient(155deg,
+			rgba(220, 220, 220, 1) 0%,
+			rgba(250, 250, 250, 1) 100%);
+}
+
+.config_table button {
+	margin-left: 5px;
+	background-color: #ff919198;
+	border: 0;
+	border-radius: 1em;
+	box-shadow: -8px -8px 15px -10px rgba(255, 255, 255, 1),
+		8px 8px 15px -10px rgba(0, 0, 0, 0.15);
+	color: #555;
+	outline: 0px;
+	padding: 5px 10px;
+	text-align: center;
+	transition: all 0.2s;
+}
+
+button {
+	margin-left: 5px;
+	background-color: #ff919198;
+	border: 0;
+	border-radius: 1em;
+	box-shadow: -8px -8px 15px -10px rgba(255, 255, 255, 1),
+		8px 8px 15px -10px rgba(0, 0, 0, 0.15);
+	color: #555;
+	outline: 0px;
+	padding: 5px 10px;
+	text-align: center;
+	transition: all 0.2s;
+}
+
+button:active {
+	padding: 5px 12px;
+	background-color: #f8ff9191;
+}
+
+.config_table button:active {
+	padding: 5px 18px;
+	background-color: #f8ff9191;
+}
+
+.config_table select {
+	background-color: #43e4f01f;
+	border: 0;
+	border-radius: 1em;
+	box-shadow: -8px -8px 10px -10px rgba(255, 255, 255, 1),
+		8px 8px 10px -10px rgba(0, 0, 0, 0.15);
+	color: #555;
+	outline: 0px;
+	text-align: center;
+	caret-color: #555;
+	transition: all 0.2s;
+	font-size: 30px;
+	padding: 10px 0px;
+}
+
+
+.config_table p {
+	font-size: 30px;
+	box-shadow: -8px -8px 15px -10px rgba(255, 255, 255, 1),
+		8px 8px 15px -10px rgba(0, 0, 0, 0.15);
+	text-align: center;
+	padding: 16px 1px;
+	border-radius: 1em;
+	/* background-color: #fd6c6c40; */
+}
+
+p {
+	font-size: 30px;
+	box-shadow: -8px -8px 15px -10px rgba(255, 255, 255, 1),
+		8px 8px 15px -10px rgba(0, 0, 0, 0.15);
+	text-align: center;
+	padding: 16px 1px;
+	border-radius: 1em;
+	/* background-color: #fd6c6c40; */
+}
+
+.config_table span {
+	display: inline-block;
+	width: var(--button-width);
+	height: var(--button-height);
+	background-color: var(--color-grey);
+	border-radius: calc(var(--button-height) / 2);
+	position: relative;
+	transition: .3s all ease-in-out;
+	box-shadow: -8px -8px 15px -10px rgba(255, 255, 255, 1),
+		8px 8px 15px -10px rgba(0, 0, 0, 0.15);
+}
+
+.config_table span::after {
+	content: '';
+	display: inline-block;
+	width: var(--toggle-diameter);
+	height: var(--toggle-diameter);
+	border-radius: calc(var(--toggle-diameter) / 2);
+	background-color: #fff;
+	position: absolute;
+	left: 0px;
+	top: var(--button-toggle-offset);
+	box-shadow: var(--toggle-shadow-offset) 0 12px rgba(0, 0, 0, .1);
+	transform: translatex(var(--button-toggle-offset));
+	transition: .3s all ease-in-out;
+}
+
+.config_table input[type="checkbox"]:checked+span {
+	background-color: var(--color-green);
+}
+
+.config_table input[type="checkbox"]:checked+span::after {
+	box-shadow: calc(var(--toggle-shadow-offset) * -1) 0 12px rgba(0, 0, 0, .1);
+	transform: translatex(calc(var(--button-width) - var(--toggle-diameter) - var(--button-toggle-offset)));
+}
+
+.config_table input[type="checkbox"]:active+span::after {
+	width: var(--toggle-wider);
+}
+
+.config_table input[type="checkbox"]:checked:active+span::after {
+	transform: translatex(calc(var(--button-width) - var(--toggle-wider) - var(--button-toggle-offset)));
+}
+
+.config_table input[type="checkbox"] {
+	display: none;
+}
+
+
+/* MENU CONTAINER ----- */
+.menu_title {
+	font-size: 60px;
+	font-weight: 80;
+	text-align: center;
+}
+
+.side_menu {
+
+	background: linear-gradient(to right, #ddd, #ddd);
+	border-radius: 0px 20px 20px 0px;
+	height: 100vh;
+	left: -250px;
+	position: fixed;
+	top: 0;
+	width: 250px;
+}
+
+.side_menu .container {
+	padding: 0 1em;
+}
+
+.container_c {
+	color: #555;
+}
+
+/* HAMBURGER STYLES ----- */
+.burger_box {
+	display: block;
+	float: right;
+	margin-right: -45px;
+}
+
+.burger_box a.menu-icon {
+	display: inline-block;
+	float: none;
+	height: 25px;
+	padding: 10px;
+	opacity: .5;
+	width: 25px;
+	z-index: 100;
+}
+
+a.menu-icon {
+	border-radius: 0px 15px 15px 0px;
+}
+
+.burger_box a.menu-icon:hover,
+.burger_box a.menu-icon.opened {
+	opacity: 1;
+}
+
+.burger_box a.menu-icon.opened {}
+
+.burger_box .menu-icon_box {
+	display: inline-block;
+	height: 25px;
+	position: relative;
+	text-align: left;
+	width: 25px;
+}
+
+.burger_box .menu-icon_line {
+	background: #000;
+	border-radius: 2px;
+	display: inline-block;
+	height: 3px;
+	position: absolute;
+	width: 100%;
+}
+
+.burger_box .menu-icon_line--1 {
+	top: 2px;
+}
+
+.burger_box .menu-icon_line--2 {
+	top: 10px;
+}
+
+.burger_box .menu-icon_line--3 {
+	top: 18px;
+}
+
+.burger_box .menu-icon_line--1 {
+	transition: top 200ms 250ms, transform 200ms;
+	-webkit-transition: top 200ms 250ms, -webkit-transform 200ms;
+}
+
+.burger_box .menu-icon_line--2 {
+	transition: opacity 0ms 300ms;
+	-webkit-transition: opacity 0ms 300ms;
+}
+
+.burger_box .menu-icon_line--3 {
+	transition: top 100ms 300ms, transform 200ms;
+	-webkit-transition: top 100ms 300ms, -webkit-transform 200ms;
+}
+
+.burger_box .menu-icon.opened .menu-icon_box {
+	transform: scale3d(0.9, 0.9, 0.9);
+	-webkit-transform: scale3d(0.9, 0.9, 0.9);
+}
+
+.burger_box .menu-icon.opened .menu-icon_line {
+	top: 10px;
+}
+
+.burger_box .menu-icon.opened .menu-icon_line--1 {
+	transform: rotate3d(0, 0, 1, 45deg);
+	-webkit-transform: rotate3d(0, 0, 1, 45deg);
+	transition: top 100ms, transform 200ms 250ms;
+	-webkit-transition: top 100ms, -webkit-transform 200ms 250ms;
+}
+
+.burger_box .menu-icon.opened .menu-icon_line--2 {
+	opacity: 0;
+	transition: opacity 200ms;
+	-webkit-transition: opacity 200ms;
+}
+
+.burger_box .menu-icon.opened .menu-icon_line--3 {
+	transform: rotate3d(0, 0, 1, -45deg);
+	-webkit-transform: rotate3d(0, 0, 1, -45deg);
+	transition: top 200ms, transform 200ms 250ms;
+	-webkit-transition: top 200ms, -webkit-transform 200ms 250ms;
+}
+
+/* STAGGER LIST ----- */
+.list_load {
+	display: none;
+	list-style: none;
+	padding: 0;
+}
+
+.selected {
+	box-shadow: -8px -8px 16px -10px rgba(255, 255, 255, 1),
+		8px 8px 16px -10px rgba(0, 0, 0, 0.15);
+	background: rgba(255, 159, 41, .2);
+}
+
+.list_item {
+	border-radius: 20px;
+	text-align: center;
+	padding-top: 15px;
+	margin-left: -20px;
+	opacity: 0;
+	-webkit-transition: all 300ms ease-in-out;
+	transition: all 300ms ease-in-out;
+	height: 60px;
+}
+
+.list_item a {
+	color: #555;
+	font-size: 30px;
+	font-weight: 60;
+	display: block;
+	padding: 5px 10px;
+	text-decoration: none;
+}
+
+.list_item:hover {
+	background: rgba(155, 155, 255, .2);
+}
+</style>
+
+	<!-- 引入js文件 -->
+	<script >
+	// Requires jQuery
+	var dc_status = "开启";
+	var device_chooce;
+
+	function refresh() {
+	
+		var stop ="";
+		
+		$("#dummybtn").html(dc_status + "仿真客户端");
+		
+	
+		$.ajax({
+			type: "post",
+			url: '/refresh',
+			dataType: 'json',
+			contentType: 'application/json;charset=UTF-8',//编码格式
+			success: function (response) {
+	
+				var inf = response.data;
+	
+				$("#realtime_data").val(inf[0].change);
+				$("#note_data").val(inf[0].jiankong);
+				console.log(inf);
+	
+				for (var i = 1; i < inf.length; i++) {
+					var status_on= document.createElement('i');
+					var status_off= document.createElement('i');
+					status_off.setAttribute("class", "bi bi-stop-fill");
+					status_off.setAttribute("style", "color: #e65c5c;font-size: 40px;text-shadow: 2px 2px 10px #00000030;");
+					status_on.setAttribute("class", "bi bi-play-fill");
+					status_on.setAttribute("style", "color: #58db54;font-size: 40px;text-shadow: 2px 2px 10px #00000030;");
+	
+					var data = document.getElementById(inf[i].id + '_data');
+					var add = document.getElementById(inf[i].id + '_add');
+					var toggle = document.getElementById(inf[i].id + '_toggle');
+					
+					if(toggle.checked)
+						data.innerHTML = inf[i].data;
+					else
+						data.innerHTML = "----";
+	
+					if(inf[i].status == 'true'){
+						add.innerHTML="";
+						add.appendChild(status_on);
+					}
+					else{
+						add.innerHTML="";
+						add.appendChild(status_off);
+					}
+	
+				}
+			},
+			error: function (xhr, type) {
+				console.log("失败");
+			}
+		});
+	}
+	refresh();
+	setInterval(refresh, 500);
+	
+	$(document).on('click', '.js-menu_toggle.closed', function (e) {
+		e.preventDefault();
+		$('.list_load, .list_item').stop();
+		$(this).removeClass('closed').addClass('opened');
+	
+		$('.side_menu').css({ 'left': '0px' });
+	
+		var count = $('.list_item').length;
+		$('.list_load').slideDown((count * .6) * 100);
+		$('.list_item').each(function (i) {
+			var thisLI = $(this);
+			timeOut = 100 * i;
+			setTimeout(function () {
+				thisLI.css({
+					'opacity': '1',
+					'margin-left': '0'
+				});
+			}, 100 * i);
+		});
+	});
+	
+	$(document).on('click', '.js-menu_toggle.opened', function (e) {
+		e.preventDefault();
+		$('.list_load, .list_item').stop();
+		$(this).removeClass('opened').addClass('closed');
+	
+		$('.side_menu').css({ 'left': '-250px' });
+	
+		var count = $('.list_item').length;
+		$('.list_item').css({
+			'opacity': '0',
+			'margin-left': '-20px'
+		});
+		$('.list_load').slideUp(300);
+	});
+	
+	$(document).on('click', '#item_1', function (e) {
+		$('#item_1').addClass('selected');
+		$('#item_2').removeClass('selected');
+		$('#item_3').removeClass('selected');
+		$('#item_4').removeClass('selected');
+	
+		$('#yckz').hide();
+		$('#sjgl').hide();
+		$('#fzkhd').hide();
+		$('#sjjk').show(500);
+	
+	});
+	
+	$(document).on('click', '#item_2', function (e) {
+		$('#item_2').addClass('selected');
+		$('#item_1').removeClass('selected');
+		$('#item_3').removeClass('selected');
+		$('#item_4').removeClass('selected');
+	
+		$('#sjjk').hide();
+		$('#sjgl').hide();
+		$('#fzkhd').hide();
+		$('#yckz').show(500);
+	
+		$.ajax({
+			type: "post",
+			url: '/get_contral_inf',
+			dataType: 'json',
+			contentType: 'application/json;charset=UTF-8',//编码格式
+			success: function (response) {
+	
+				var inf = response.data;
+				//console.log(inf);
+				for (var i = 0; i < inf.length; i++) {
+					//var add = document.getElementById(inf[i].id + '_add');
+					var data = document.getElementById(inf[i].id + '_data');
+					var toggle = document.getElementById(inf[i].id + '_toggle');
+					var btn = document.getElementById(inf[i].id + '_xg');
+					var heartbreak = document.getElementById(inf[i].id);
+	
+					toggle.setAttribute("onclick", "kaiguan(this.id)");
+					btn.setAttribute("onclick", "change_time(this.id)");
+	
+					//add.innerHTML = "0x " + inf[i].id;
+					data.innerHTML = inf[i].data;
+					heartbreak.value = inf[i].time;
+					if(inf[i].status == 'true')
+						toggle.checked = true;
+					else
+						toggle.checked = false;
+				}
+	
+			},
+			error: function (xhr, type) {
+				console.log("获取控制信息失败");
+			}
+		});
+	
+	});
+	
+	$(document).on('click', '#item_3', function (e) {
+		$('#item_3').addClass('selected');
+		$('#item_2').removeClass('selected');
+		$('#item_1').removeClass('selected');
+		$('#item_4').removeClass('selected');
+	
+		$('#sjjk').hide();
+		$('#yckz').hide();
+		$('#fzkhd').hide();
+		$('#sjgl').show(500);
+		
+	
+		var db_toggle=document.getElementById("database_toggle");
+		db_toggle.checked=true;
+		var db_url=document.getElementById("database_url");
+		db_url.value="jdbc:mysql://127.0.0.1:3306/java";
+	
+	});
+	
+	$(document).on('click', '#item_4', function (e) {
+		$('#item_4').addClass('selected');
+		$('#item_3').removeClass('selected');
+		$('#item_2').removeClass('selected');
+		$('#item_1').removeClass('selected');
+	
+		$('#sjjk').hide();
+		$('#yckz').hide();
+		$('#sjgl').hide();
+		$('#fzkhd').show(500);
+	
+	
+	});
+	
+	
+	function change_time(id) {
+		id = id.replace("_xg","");
+		var time = document.getElementById(id).value;
+		var data = {
+			"add": id,
+			"time": time
+		};
+	
+		$.ajax({
+			type: "post",
+			url: '/change_time',
+			dataType: 'json',
+			data: JSON.stringify(data),
+			contentType: 'application/json;charset=UTF-8',//编码格式
+			success: function (response) {
+				//console.log(response);
+			},
+			error: function (xhr, type) {
+				console.log("失败");
+			}
+		});
+	
+	}
+	
+	function kaiguan(id) {
+		var btn=document.getElementById(id);
+		var add=id.replace("_toggle","");
+		var data_lab = document.getElementById(add + "_data");
+		var data={
+			"add":add,
+			"status":''
+		};
+		if(btn.checked){
+			data.status='1';
+			
+		}
+		else{
+			data.status="";
+			
+		}
+	
+		$.ajax({
+			type: "post",
+			url: '/change_status',
+			dataType: 'json',
+			data: JSON.stringify(data),
+			contentType: 'application/json;charset=UTF-8',//编码格式
+			success: function (response) {
+				if(response.status == "success"){
+					
+				}
+			},
+			error: function (xhr, type) {
+				console.log("失败");
+			}
+		});
+	}
+	// 开关仿真客户端
+	function startDummy(){
+		var data = {
+			"status": dc_status
+		}
+	
+		if(dc_status == "开启")
+			dc_status = "关闭";
+		else
+			dc_status = "开启";
+	
+		$.ajax({
+			type: "post",
+			url: '/start_dummy',
+			dataType: 'json',
+			data: JSON.stringify(data),
+			contentType: 'application/json;charset=UTF-8',//编码格式
+			success: function (response) {
+				if(response.status == "on"){
+					console.log("仿真客户端启动！");
+				}
+				if(response.status == "off"){
+					console.log("仿真客户端关闭！");
+				}
+			},
+			error: function (xhr, type) {
+				console.log("仿真客户端控制出错！");
+			}
+		});
+	}
+
+	// 修改jdbc-url
+	function changeurl(){
+		var url = $("#database_url").val();
+		var data = {
+			"url": url
+		}
+	
+		$.ajax({
+			type: "post",
+			url: '/getsqlurl',
+			dataType: 'json',
+			data: JSON.stringify(data),
+			contentType: 'application/json;charset=UTF-8',//编码格式
+			success: function (response) {
+				console.log("url修改成功！");
+			},
+			error: function (xhr, type) {
+				console.log("url修改出错！");
+			}
+		});
+	}
+
+	$(document).on('click', '.more', function (e) {
+		device_chooce = $(this).attr('id');
+		console.log(device_chooce[0]);
+	});
+
+	function changethreshold(){		
+		let id = device_chooce[0];
+		var yz = $('#yz-input').val();
+		
+		var data = {
+			"add": id,
+			"threshold": yz
+		};
+	
+		$.ajax({
+			type: "post",
+			url: '/change_threshold',
+			dataType: 'json',
+			data: JSON.stringify(data),
+			contentType: 'application/json;charset=UTF-8',//编码格式
+			success: function (response) {
+				console.log(response);
+			},
+			error: function (xhr, type) {
+				console.log("失败");
+			}
+		});
+	}
+
+</script>
+ 
+</head>
+
+<body>
+	<!-- partial:index.partial.html -->
+	<div class="row">
+		<div class="col-lg-2">
+		</div>
+		<div class="col-lg-9">
+
+			<!--数据监控页面-->
+			<div class="row" id="sjjk" style="overflow:auto;">
+
+				<div class="row col-lg-12"  style="margin-top: 100px;">
+					<div class="col-lg-6">
+						<div class="row">
+							<div class="col-lg-12 tou">
+
+								<span>实时传感器数据</span>
+							</div>
+
+						</div>
+						<div class="row">
+							<div class="col-lg-12" style="margin: 0 auto;text-align:center">
+								<textarea id='realtime_data' class="xianshi" readonly="readonly"
+									rows="20" name="RealTime" style="height: 600px;"></textarea>
+							</div>
+						</div>
+
+					</div>
+					<div class="col-lg-6">
+						<div class="row">
+							<div class="col-lg-12 tou">
+
+								<span>数据传输记录</span>
+							</div>
+						</div>
+						<div class="row">
+							<div class="col-lg-12" style="margin: 0 auto;text-align:center">
+								<textarea id='note_data' class="xianshi" readonly="readonly"
+									rows="20" name="RealTime" style="height: 600px;"></textarea>
+							</div>
+						</div>
+
+					</div>
+				</div>
+			</div>
+
+			<!--远程控制页面-->
+			<div class="row" id="yckz" style="display:none;">
+				<div class="col-lg-12" style="text-align: center;margin-top: 100px;">
+					<div class="config_table">
+						<table class="table table-hover" style="text-align: center;color: #555;">
+							<thead>
+								<tr>
+									<th style="width: 15%;">传感器</th>
+									<th>外设状态</th>
+									<th>数据</th>
+									<th>更新间隔</th>
+									<th>设备开关</th>
+									<th>更多操作</th>
+								</tr>
+							</thead>
+							<tbody>
+								<tr class="">
+									<th scope="row">1</th>
+									<td id='0_add'></td>
+									<td id="0_data">----</td>
+									<td>
+										<div class="danwei">
+											<input id="0" type="text">
+											<button id="0_xg">修改</button>
+										</div>
+									</td>
+									<td>
+
+										<label for="0_toggle">
+											<input type="checkbox" id="0_toggle">
+											<span></span>
+										</label>
+									</td>
+									<td>
+										<!-- Button trigger modal -->
+										<button class="more" id="0_more" style="background-color: #caf15c57;" data-bs-toggle="modal" data-bs-target="#staticBackdrop">
+											更 多
+										</button>
+									</td>
+								</tr>
+								<tr>
+									<th scope="row">2</th>
+									<td id='1_add'></td>
+									<td id="1_data">----</td>
+									<td>
+										<div class="danwei">
+											<input id="1" type="text">
+											<button id="1_xg">修改</button>
+										</div>
+									</td>
+									<td>
+
+										<label for="1_toggle">
+											<input type="checkbox" id="1_toggle">
+											<span></span>
+										</label>
+									</td>
+									<td>
+										<!-- Button trigger modal -->
+										<button class="more" id="1_more" style="background-color: #caf15c57;" data-bs-toggle="modal" data-bs-target="#staticBackdrop">
+											更 多
+										</button>
+									</td>
+								</tr>
+								<tr class="">
+									<th scope="row">3</th>
+									<td id="2_add"></td>
+									<td id="2_data">----</td>
+									<td>
+										<div class="danwei">
+											<input id="2" type="text">
+											<button id="2_xg">修改</button>
+										</div>
+									</td>
+									<td>
+
+										<label for="2_toggle">
+											<input type="checkbox" id="2_toggle">
+											<span></span>
+										</label>
+									</td>
+									<td>
+										<!-- Button trigger modal -->
+										<button class="more" id="2_more" style="background-color: #caf15c57;" data-bs-toggle="modal" data-bs-target="#staticBackdrop">
+											更 多
+										</button>
+									</td>
+								</tr>
+								<tr>
+									<th scope="row">4</th>
+									<td id="3_add"></td>
+									<td id="3_data">----</td>
+									<td>
+										<div class="danwei">
+											<input id="3" type="text">
+											<button id="3_xg">修改</button>
+										</div>
+									</td>
+									<td>
+
+										<label for="3_toggle">
+											<input type="checkbox" id="3_toggle">
+											<span></span>
+										</label>
+									</td>
+									<td>
+										<!-- Button trigger modal -->
+										<button class="more" id="3_more" style="background-color: #caf15c57;" data-bs-toggle="modal" data-bs-target="#staticBackdrop">
+											更 多
+										</button>
+									</td>
+								</tr>
+								<tr class="">
+									<th scope="row">5</th>
+									<td id="4_add"></td>
+									<td id="4_data">----</td>
+									<td>
+										<div class="danwei">
+											<input id="4" type="text">
+											<button id="4_xg">修改</button>
+										</div>
+									</td>
+									<td>
+
+										<label for="4_toggle">
+											<input type="checkbox" id="4_toggle">
+											<span></span>
+										</label>
+									</td>
+									<td>
+										<!-- Button trigger modal -->
+										<button class="more" id="4_more" style="background-color: #caf15c57;" data-bs-toggle="modal" data-bs-target="#staticBackdrop">
+											更 多
+										</button>
+									</td>
+								</tr>
+								<tr>
+									<th scope="row">6</th>
+									<td></td>
+									<td>----</td>
+									<td>Column content</td>
+									<td>Column content</td>
+									<td>----</td>
+								</tr>
+								<tr class="">
+									<th scope="row">7</th>
+									<td></td>
+									<td>----</td>
+									<td>Column content</td>
+									<td>Column content</td>
+									<td>----</td>
+								</tr>
+								<tr>
+									<th scope="row">8</th>
+									<td></td>
+									<td>----</td>
+									<td>Column content</td>
+									<td>Column content</td>
+									<td>----</td>
+								</tr>
+								<tr class="">
+									<th scope="row">9</th>
+									<td></td>
+									<td>----</td>
+									<td>Column content</td>
+									<td>Column content</td>
+									<td>----</td>
+								</tr>
+							</tbody>
+						</table>
+					</div>
+				</div>
+
+				<!-- Modal -->
+				<div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+					<div class="modal-dialog modal-dialog-centered">
+					<div class="modal-content"  style="color: #555;background-color: #eee;">
+						<div class="modal-header">
+						<h5 class="modal-title" id="staticBackdropLabel">更多操作</h5>
+						<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+						</div>
+						<div class="modal-body">
+							<div class="row">
+								<div class="col-lg-3">
+									<p style="font-size: 20px;padding-top: 3px;padding-bottom: 3px;background-color: #af7eff63;">预警阈值</p>
+								</div>
+								<div class="col-lg-7">
+									<input id="yz-input" type="text" style="width: 100%;">									
+								</div>
+								<div class="col-lg-2">
+									<button onclick="changethreshold()">修改</button>
+								</div>
+							</div>
+							<div class="row">
+								<div class="col-lg-3">
+									<p style="font-size: 20px;padding-top: 3px;padding-bottom: 3px;background-color: #af7eff63;">调节区间</p>
+								</div>
+								<div class="col-lg-7">
+									<input type="text" style="width: 100%;">
+									
+								</div>
+								<div class="col-lg-2">
+									<button>修改</button>
+								</div>
+							</div>
+							<div class="row">
+								<div class="col-lg-3">
+									<p style="font-size: 20px;padding-top: 3px;padding-bottom: 3px;background-color: #af7eff63;">定时关闭</p>
+								</div>
+								<div class="col-lg-7">
+									<input type="text" style="width: 100%;">
+									
+								</div>
+								<div class="col-lg-2">
+									<button>修改</button>
+								</div>
+							</div>
+						</div>
+						<div class="modal-footer">
+						<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">关闭</button>
+						</div>
+					</div>
+					</div>
+				</div>
+
+			</div>
+
+			<!--数据管理页面-->
+			<div class="row" id="sjgl" style="display:none;">
+				<div class="row col-lg-12" style="margin-top: 100px;">
+					<div class="config_table" style="background: linear-gradient(135deg,rgba(230, 230, 230, 1) 0%,rgba(246, 246, 246, 1) 100%);">
+						<div class="row">
+							<div class="col-lg-12 config_table"
+								style="margin-top: 20px;background: linear-gradient( 90deg,#deff903a 0%,rgba(250, 250, 250, 0) 100%);">
+								<div class="row">
+									<div class="col-lg-1">
+										<label for="database_toggle" style="margin-top: 15px;">
+											<input type="checkbox" id="database_toggle">
+											<span></span>
+										</label>
+									</div>
+									<div class="col-lg-2">
+										<p>数据库类型</p>
+									</div>
+									<div class="col-lg-2">
+										<select style="border-radius:10px">
+											<option>MySQL</option>
+											<option>PostgreSQL</option>
+											<option>H2Database</option>
+											<option>Oracle</option>
+										</select>
+									</div>
+									<div class="col-lg-7">
+										<input id="database_url" type="text"
+											style="font-size: 25px;padding: 16px;width: 100%;text-align: left;"
+											placeholder="请输入数据库URL" onchange="changeurl()">
+									</div>
+								</div>
+							</div>
+						</div>
+						<div class="row">
+							<div class="col-lg-12 config_table"
+								style="margin-top: 20px;background: linear-gradient( 90deg,#90fff63a 0%,rgba(250, 250, 250, 0) 100%);">
+								<div class="row">
+									<div class="col-lg-1">
+										<label for="httpurl_toggle" style="margin-top: 15px;">
+											<input type="checkbox" id="httpurl_toggle">
+											<span></span>
+										</label>
+									</div>
+									<div class="col-lg-2">
+										<p>HTTP URL</p>
+									</div>
+
+									<div class="col-lg-9">
+										<input id="http_url" type="text"
+											style="font-size: 25px;padding: 16px;width: 100%;text-align: left;"
+											placeholder="请输入HTTP URL">
+									</div>
+								</div>
+							</div>
+						</div>
+						<div class="row">
+							<div class="col-lg-12 config_table"
+								style="margin-top: 20px;background: linear-gradient( 90deg,#ffcf903a 0%,rgba(250, 250, 250, 0) 100%);">
+								<div class="row">
+									<div class="col-lg-1">
+										<label for="zhuti_toggle" style="margin-top: 15px;">
+											<input type="checkbox" id="zhuti_toggle">
+											<span></span>
+										</label>
+									</div>
+									<div class="col-lg-2">
+										<p>连接URL</p>
+									</div>
+
+									<div class="col-lg-9">
+										<input id="messege_url" type="text"
+											style="font-size: 25px;padding: 16px;width: 100%;text-align: left;"
+											placeholder="请输入消息队列URL">
+									</div>
+								</div>
+								<div class="row">
+									<div class="col-lg-1">
+
+									</div>
+									<div class="col-lg-2">
+										<p>发布主题</p>
+									</div>
+
+									<div class="col-lg-9">
+										<input id="zhuti_url" type="text"
+											style="font-size: 25px;padding: 16px;width: 100%;text-align: left;"
+											placeholder="请输入主题名称">
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+
+			<!--仿真客户端页面-->
+			<div class="row" id="fzkhd" style="display:none;">
+				<div class="col-lg-12" style="text-align: center;margin-top: 100px;">
+					<div class="config_table" style="height: 800px;">
+						<div class="row">
+							<div class="col-lg-4">
+
+							</div>
+							<div class="col-lg-4">
+								<p style="background-color: rgba(221, 221, 221, 0.418);">仿真客户端</p>
+							</div>
+						</div>
+
+						<div class="row config_table">
+							<div class="col-lg-4">
+								<p style="background-color:rgba(221, 221, 221, 0.418);">地址码：<input type="text"></p>
+							</div>
+							<div class="col-lg-4">
+								<p style="background-color:rgba(221, 221, 221, 0.418);">功能码：<input type="text"></p>
+							</div>
+							<div class="col-lg-4">
+								<p style="background-color:rgba(221, 221, 221, 0.418);">数据长度：<input type="text"></p>
+							</div>
+							<div class="col-lg-12">
+								<p style="background-color:rgba(221, 221, 221, 0.418);">数据内容： <input type="text" style="width: 80%;"></p>
+							</div>
+							<div class="col-lg-3">
+								<p style="background-color:rgba(221, 221, 221, 0.418);">校验位H：<input type="text" readonly></p>
+							</div>
+							<div class="col-lg-3">
+								<p style="background-color:rgba(221, 221, 221, 0.418);">校验位L：<input type="text" readonly></p>
+							</div>
+							<div class="col-lg-4"></div>
+							<div class="col-lg-2">
+								<button style="height: 80px;width: 180px;font-size: 30px;" onclick="jiaoyan()">生成校验码</button>
+							</div>
+						</div>
+						<div class="row" style="margin-top: 30px;height: 200px;">
+							<div class="col-lg-8">
+								<textarea class="xianshi" rows="5"></textarea>
+							</div>
+							<div class="col-lg-4">
+								<div class="row" style="height: 50%;">
+									<div class="col-lg-2"></div>
+									<div class="col-lg-6">
+										<button id="dummybtn" style="width: auto;height: 60px;font-size: 28px;margin-top: 40px;background: #30ccd131;" onclick="startDummy()">开启仿真客户端</button>
+									</div>
+								</div>
+								<div class="row" style="height: 50%;">
+									<div class="col-lg-2"></div>
+									<div class="col-lg-6">
+										<button style="height: 60px;font-size: 28px;background: #30d15331;">发送测试数据</button>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+
+
+		</div>
+	</div>
+	<div class="side_menu">
+		<div class="burger_box">
+			<div class="menu-icon-container">
+				<a href="#" class="menu-icon js-menu_toggle closed">
+					<span class="menu-icon_box">
+						<span class="menu-icon_line menu-icon_line--1"></span>
+						<span class="menu-icon_line menu-icon_line--2"></span>
+						<span class="menu-icon_line menu-icon_line--3"></span>
+					</span>
+				</a>
+			</div>
+		</div>
+		<div class="container_c">
+			<h1 class="menu_title">菜 单</h1>
+			<ul class="list_load">
+				<li id="item_1" class="list_item selected"><a href="#">数据监控</a></li>
+				<li id="item_2" class="list_item"><a href="#">远程控制</a></li>
+				<li id="item_3" class="list_item"><a href="#">数据管理</a></li>
+				<li id="item_4" class="list_item"><a href="#">仿真客户端</a></li>
+			</ul>
+			<div class="spacer_box">
+				<p></p>
+			</div>
+		</div>
+	</div>
+
+</body>
+
+</html>
